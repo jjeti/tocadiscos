@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tocadiscos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app">
+    <!-- Tocadiscos: coordenadas internas fijas 640x460, escalado por JS -->
+    <section class="stage">
+      <div class="deck-wrap" id="deckWrap">
+        <div class="deck" id="deck">
+          <div class="platter">
+            <div class="vinyl" id="vinyl">
+              <div class="label" id="label">
+                <span class="label-title" id="labelTitle">Añade música</span>
+                <span class="label-artist" id="labelArtist">Arrastra archivos o una carpeta</span>
+                <span class="label-side">33⅓ rpm</span>
+              </div>
+              <div class="spindle"></div>
+            </div>
+            <div class="sheen"></div>
+          </div>
+
+          <div class="arm-base"></div>
+          <div class="arm-rest"></div>
+
+          <div class="tonearm" id="tonearm">
+            <div class="counterweight"></div>
+            <div class="arm-stub"></div>
+            <div class="arm-tube"></div>
+            <div class="headshell"><div class="finger"></div><div class="stylus"></div></div>
+          </div>
+          <div class="arm-cap"></div>
+
+          <button class="start-btn" id="startBtn" aria-label="Encender o apagar el plato" title="Encender o apagar (espacio)">
+            <span class="pilot" id="pilot"></span>
+          </button>
+
+          <div class="speed" role="group" aria-label="Velocidad">
+            <button class="speed-btn active" data-rpm="33">33</button>
+            <button class="speed-btn" data-rpm="45">45</button>
+          </div>
+
+          <div class="knob-wrap" title="Volumen (↑/↓ o rueda)">
+            <div class="knob" id="knob" role="slider" aria-label="Volumen"><div class="knob-mark"></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reproducción actual -->
+    <section class="now">
+      <h1 class="now-title" id="nowTitle">Sin canción</h1>
+      <p class="now-artist" id="nowArtist">Añade archivos de audio para empezar</p>
+
+      <div class="progress-row">
+        <span class="time" id="timeCur">0:00</span>
+        <div class="progress" id="progress"><div class="progress-fill" id="progressFill"></div></div>
+        <span class="time" id="timeDur">0:00</span>
+      </div>
+
+      <div class="transport">
+        <button class="t-btn" id="prevBtn" aria-label="Anterior" title="Anterior (P)">
+          <svg viewBox="0 0 24 24"><path d="M6 5v14M18 6l-9 6 9 6z" /></svg>
+        </button>
+        <button class="t-btn t-play" id="playBtn" aria-label="Reproducir" title="Reproducir o pausar (espacio)">
+          <svg class="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z" /></svg>
+          <svg class="i-pause" viewBox="0 0 24 24"><path d="M8 5.5v13M16 5.5v13" /></svg>
+        </button>
+        <button class="t-btn" id="nextBtn" aria-label="Siguiente" title="Siguiente (N)">
+          <svg viewBox="0 0 24 24"><path d="M18 5v14M6 6l9 6-9 6z" /></svg>
+        </button>
+      </div>
+
+      <canvas class="viz" id="viz" aria-hidden="true"></canvas>
+    </section>
+
+    <!-- Lista de reproducción -->
+    <section class="playlist">
+      <header class="pl-head">
+        <h2>Playlist</h2>
+        <div class="pl-actions">
+          <label class="add-btn" title="Añadir canciones sueltas">
+            Añadir canciones
+            <input type="file" id="fileInput" accept="audio/*" multiple hidden />
+          </label>
+          <label class="add-btn" title="Añadir todas las canciones de una carpeta (incluye subcarpetas)">
+            Añadir carpeta
+            <input type="file" id="folderInput" webkitdirectory multiple hidden />
+          </label>
+        </div>
+      </header>
+      <ol class="pl-list" id="plList"></ol>
+      <p class="pl-empty" id="plEmpty">Arrastra archivos de audio o carpetas enteras a cualquier parte de la página.</p>
+      <button class="pl-clear" id="clearBtn" hidden>Vaciar playlist</button>
+      <p class="pl-help">Espacio para reproducir o pausar, flechas para avanzar y cambiar el volumen. Arrastra la aguja sobre el disco para saltar a otro punto.</p>
+    </section>
+  </main>
+
+  <div class="drop-overlay" id="dropOverlay"><div>Suelta para añadir a la playlist</div></div>
+
+  <audio id="audio" preload="metadata"></audio>
+  <script src="app.js"></script>
+</body>
+</html>
